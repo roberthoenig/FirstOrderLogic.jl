@@ -1,6 +1,6 @@
-| **Build status** | **Coverage** |
-|:-----------------:|:----------------:|
-| [![][travis-img]][travis-url] [![][appveyor-img]][appveyor-url] | [![][codecov-img]][codecov-url] |
+| **Linux** | **Windows** | **Coverage** |
+|:-----------------:|:----------------:|:----------------:|
+| [![][travis-img]][travis-url] | [![][appveyor-img]][appveyor-url] | [![][codecov-img]][codecov-url] |
 
 # FirstOrderLogic
 
