@@ -4,7 +4,6 @@ function get_most_general_unifier(unifiables::Set{<:Unifiable})
     unifier = Substitution()
     unified = first(unifiables)
     for unifiable in collect(unifiables)[2:end]
-        # @debug unifier
         most_general_unifier!(unifier, unified, unifiable)
         substitute(unified, unifier)
     end
@@ -14,8 +13,6 @@ end
 function most_general_unifier!(unifier!::Substitution, unifiable1::Unifiable, unifiable2::Unifiable)
     substituted_unifiable1 = substitute(unifiable1, unifier!)
     substituted_unifiable2 = substitute(unifiable2, unifier!)
-    # @debug String(substituted_unifiable1)
-    # @debug String(substituted_unifiable2)
     @match substituted_unifiable1 begin
     u1::Literal => begin
         # Two clauses A and B can only be unified if the
@@ -70,7 +67,6 @@ end
 
 # Apply substitution in order.
 function substitute(formula::Union{Term, Formula, Literal, Clause}, substitution::Substitution)
-    # @debug substitution
     substituted_formula = formula
     for (substitutee, substituter) in substitution
         substituted_formula = substitute(substituted_formula, substitutee, substituter)
@@ -79,8 +75,6 @@ function substitute(formula::Union{Term, Formula, Literal, Clause}, substitution
 end
 
 function substitute(formula::Union{Term, Formula, Literal, Clause}, substitutee, substituter)
-    # println("substitute")
-    # @debug formula
     @match formula begin
     f::CNF => @applyrecursively substitute(:_, substitutee, substituter) f CNF
     f::Clause => @applyrecursively substitute(:_, substitutee, substituter) f Clause
@@ -141,27 +135,17 @@ function rename_all_variables(formula, replacements=Dict{Variable, Variable}())
 end
 
 function get_maybe_unifiable_literals(clause1::Clause, clause2::Clause)
-    # println("get_mabye_unifiable_literals")
-    # println(clause1)
-    # println(clause2)
     maybe_unifiable_literals = Set{Set{Literal}}()
     all_literals = union(clause1, clause2)
     literal_names = Set(map(l -> l.formula.name, all_literals))
     for literal_name in literal_names
-        # println("literal_name ", literal_name)
         for (c1, c2) in ((clause1, clause2), (clause2, clause1))
-            # println("c1 ", string(c1))
-            # println("c2 ", string(c2))
             positive_literals_in_c1 =
                 filter(l -> l.formula.name == literal_name && !l.negative, c1)
             negative_literals_in_c2 =
                 filter(l -> l.formula.name == literal_name && l.negative, c2)
             positive_literals_combinations = powerset(positive_literals_in_c1)
             negative_literals_combinations = powerset(negative_literals_in_c2)
-            # println("positive_literals_in_c1 ", positive_literals_in_c1)
-            # println("positive_literals_combinations ", positive_literals_combinations)
-            # println("negative_literals_in_c2 ", negative_literals_in_c2)
-            # println("negative_literals_combinations ", negative_literals_combinations)
             for positive_literals in positive_literals_combinations
                 for negative_literals in negative_literals_combinations
                     if length(positive_literals) > 0 && length(negative_literals) > 0
@@ -172,37 +156,24 @@ function get_maybe_unifiable_literals(clause1::Clause, clause2::Clause)
             end
         end
     end
-    # println("maybe_unifiable_literals ", maybe_unifiable_literals)
     maybe_unifiable_literals
 end
 
 function is_satisfiable(clauses::CNF; maxsearchdepth=Inf)
-    # @debug maxsearchdepth
-    # @debug length(clauses)
     if maxsearchdepth == 0
         throw(OverMaxSearchDepthError())
     end
     renamed = rename_all_variables.(collect(clauses))
     clauses = CNF(renamed)
-    # @debug String(clauses)
     newclauses = CNF()
     for clause1 in clauses
-        # @debug clause1
         for clause2 in clauses
-            # @debug String(clause1)
-            # @debug String(clause2)
             groups_of_maybe_unifiable_literals = get_maybe_unifiable_literals(clause1, clause2)
-            # @debug String(groups_of_maybe_unifiable_literals)
             for maybe_unifiable_literals in groups_of_maybe_unifiable_literals
-                # @debug String(maybe_unifiable_literals)
                 try
                     unifier = get_most_general_unifier(maybe_unifiable_literals)
                     newclause = setdiff(union(clause1, clause2), maybe_unifiable_literals)
-                    # @debug unifier
-                    # @debug String(newclause)
                     substituted_newclause = substitute(newclause, unifier)
-                    # @debug unifier
-                    # @debug String(substituted_newclause)
                     push!(newclauses, substituted_newclause)
                 catch
                     continue
@@ -211,7 +182,6 @@ function is_satisfiable(clauses::CNF; maxsearchdepth=Inf)
         end
     end
     union!(clauses, newclauses)
-    # @debug String(clauses)
     if Clause([]) in clauses
         false
     else

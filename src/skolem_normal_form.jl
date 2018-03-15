@@ -8,7 +8,6 @@ function get_skolem_normal_form(formula, replacements=Dict{Variable, Function}()
     end
     f::EFormula => begin
         replacements[f.variable] = Function(FunctionSymbol(getnextfreesymbol()), all_quantifiers)
-        # @debug replacements[f.variable]
         get_skolem_normal_form(f.formula, replacements, all_quantifiers)
     end
     f::Conjunction || f::Disjunction => typeof(f)(get_skolem_normal_form(f.formula1, replacements), get_skolem_normal_form(f.formula2, replacements))

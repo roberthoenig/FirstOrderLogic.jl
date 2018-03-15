@@ -11,7 +11,6 @@ function get_renamed_quantifiers_form(formula, replacements=Dict{Variable, Varia
     )
     f::AFormula || f::EFormula => begin
         replacements[f.variable] = Variable(getnextfreesymbol())
-        # println("got next symbol, ", replacements[f.variable])
         typeof(f)(
             replacements[f.variable],
             get_renamed_quantifiers_form(f.formula, copy(replacements)),

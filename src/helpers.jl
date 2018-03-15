@@ -1,5 +1,4 @@
 export @debug
-    #    reshape
 
 function bracketsplit(str)
     parts = []
@@ -49,10 +48,7 @@ end
 
 function powerset(x)
     result = [Set()]
-    # println("collect(x) ", collect(x))
     for element in collect(x), idx = 1:length(result)
-        # println("element ", element)
-        # println("idx ", idx)
         newsubset = union(result[idx], Set([element]))
         push!(result, newsubset)
     end
@@ -87,19 +83,6 @@ function dispatch_applyrecursively(functionexpr, objectexpr,
     end
 end
 
-# function dispatch_applyrecursively(functionexpr, objectexpr,
-#                                     objecttype::Type{Val{:monotone_fields}})
-#     fsymbol, fargs = functionexpr.args[1],
-#                         functionexpr.args[2:end]
-#     quote
-#     typeof($(esc(objectexpr)))(
-#         [$fsymbol(
-#             [arg == :_ ? field : arg
-#                 for arg in $(esc(fargs))]...)
-#             for field in getfield.($(esc(objectexpr)), fieldnames($(esc(objectexpr))))]...)
-#     end
-# end
-
 macro debug(variable)
     Expr(:call,
          :println,
@@ -111,7 +94,6 @@ macro debug(variable)
         "\n"
         )
 end
-print(args...) = println(args...)
 
 let nextfreesymbol = 0
     global getnextfreesymbol
@@ -124,28 +106,3 @@ let nextfreesymbol = 0
         nextfreesymbol = 0
     end
 end
-
-# function reshape(formula::String, form::FormulaForm)
-#     form == string ? String(Formula(formula)) : reshape(Formula(formula))
-# end
-
-# function reshape(formula::Formula, form::FormulaForm)
-#     @match form begin
-#     string => String(formula)
-#     formula => formula
-#     quantifiedvariables => get_quantified_variables_form(formula)
-#     prenex => get_prenex_normal_form(formula)
-#     skolem => get_prenex_normal_form(
-#         get_skolem_normal_form(formula)
-#     )
-#     removedquantifier => get_removed_quantifier_form(formula)
-#     conjunctive => get_conjunctive_normal_form(formula)
-#     resolutionready => get_conjunctive_normal_form(
-#         get_removed_quantifier_form(
-#             get_skolem_normal_form(
-#                 get_prenex_normal_form(
-#                     get_quantified_variables_form(
-#                         Formula(formula)))))
-#     )
-#     end
-# end

@@ -16,7 +16,6 @@ export Term,
     Substitution,
     Unifiable,
     OverMaxSearchDepthError
-    # FormulaForm
 
 abstract type Term end
 abstract type Formula end
@@ -73,10 +72,9 @@ end
 end
 
 const Clause = Set{Literal}
-const CNF = Set{Clause}
+const CNF = Set{Clause}  # Conjunctive xnormal form
 const Substitution = Vector{Pair{Variable, Term}}
 const Unifiable = Union{Literal, Term}
-# Conjunctive normal form
 
 String(x::PredicateSymbol) = x.symbol
 String(x::FunctionSymbol) = x.symbol
@@ -113,5 +111,3 @@ end
 
 type NotUnifiableError <: Exception
 end
-
-# @enum FormulaForm string formula quantifiedvariables prenex skolem removedquantifier conjunctive resolutionready

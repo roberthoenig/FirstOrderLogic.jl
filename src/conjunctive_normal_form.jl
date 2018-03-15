@@ -11,7 +11,7 @@ function get_conjunctive_normal_form(formula)
     """
     Get equivalent formula with no negation in non-literal formulas.
     """
-        function collapse_negations(formula)
+    function collapse_negations(formula)
         @match formula begin
         f::Negation => begin
             @match f.formula begin
