@@ -1,5 +1,12 @@
 export get_renamed_quantifiers_form
 
+"""
+    get_renamed_quantifiers_form(formula, replacements=Dict{Variable, Variable}())
+
+Return `formula` with new, unique variable symbols assigned to each quantified variable.
+
+The returned formula is logically equivalent to `formula`.
+"""
 function get_renamed_quantifiers_form(formula, replacements=Dict{Variable, Variable}())
     @match formula begin
     f::Negation => Negation(

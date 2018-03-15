@@ -1,6 +1,13 @@
 export get_quantified_variables_form,
     get_unbound_variables
 
+"""
+    get_quantified_variables_form(formula)
+
+Return `formula` with all unbound variables bound to existential quantifiers.
+
+The returned formula is equisatisfiable with `formula`.
+"""
 function get_quantified_variables_form(formula)
     variables = get_unbound_variables(formula)
     quantified_variables_form = formula

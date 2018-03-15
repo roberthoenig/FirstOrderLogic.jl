@@ -1,16 +1,18 @@
 export get_conjunctive_normal_form
 
 """
-Get equivalent formula in the conjunctive normal form for a given formula.
+    get_conjunctive_normal_form(formula)
+
+Return `formula` in the conjunctive normal form, expressed as clauses.
+
+`formula` must not contain quantifiers. The returned formula is logically
+equivalent to `formula`.
 """
 function get_conjunctive_normal_form(formula)
 # Ideally, we would use a single @match clause to handle both
 # negations and junctions. The negation case is tricky to implement
 # in such a unified approach, however, so we generate the CNF in two
 # steps.
-    """
-    Get equivalent formula with no negation in non-literal formulas.
-    """
     function collapse_negations(formula)
         @match formula begin
         f::Negation => begin

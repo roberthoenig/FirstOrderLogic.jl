@@ -1,4 +1,7 @@
-export @debug
+export @debug,
+    powerset,
+    getnextfreesymbol,
+    resetfreesymbols
 
 function bracketsplit(str)
     parts = []
@@ -46,6 +49,11 @@ function strip_and_remove_surrounding_brackets(str)
     str
 end
 
+"""
+    powerset(x)
+
+Returns the powerset of x (a set of all subsets of x).
+"""
 function powerset(x)
     result = [Set()]
     for element in collect(x), idx = 1:length(result)
@@ -83,6 +91,11 @@ function dispatch_applyrecursively(functionexpr, objectexpr,
     end
 end
 
+"""
+    @debug variable
+
+Print the symbol `variable`, followed by its value, followed by an empty line.
+"""
 macro debug(variable)
     Expr(:call,
          :println,
@@ -94,6 +107,27 @@ macro debug(variable)
         "\n"
         )
 end
+
+
+"""
+    getnextfreesymbol()
+
+Returns a new, unique string that can be used
+for naming objects.
+
+This does not check if a user-entered formula
+already contains the returned string.
+"""
+function getnextfreesymbol end
+
+"""
+    resetfreesymbols()
+
+Resets the free symbol state.
+
+Newly generated symbols will "start over".
+"""
+function resetfreesymbols end
 
 let nextfreesymbol = 0
     global getnextfreesymbol

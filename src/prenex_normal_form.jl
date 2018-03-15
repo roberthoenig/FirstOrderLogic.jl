@@ -25,6 +25,13 @@ function handle_junction(formula1, formula2, junction)
     end
 end
 
+"""
+    get_prenex_normal_form(formula)
+
+Return the prenex normal form of `formula`.
+
+The returned formula is logically equivalent to `formula`.
+"""
 function get_prenex_normal_form(formula)
     prepared_formula = get_renamed_quantifiers_form(formula)
     @match prepared_formula begin

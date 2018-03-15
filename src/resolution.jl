@@ -1,5 +1,12 @@
 export is_satisfiable
 
+"""
+    get_most_general_unifier(unifiables::Set{<:Unifiable})
+
+Returns the most general unifier of `unifiable1` and `unifiable2`.
+
+This is a naive implementation of a unification algorithm. It is supposed to be comprehensible.
+"""
 function get_most_general_unifier(unifiables::Set{<:Unifiable})
     unifier = Substitution()
     unified = first(unifiables)
@@ -10,6 +17,13 @@ function get_most_general_unifier(unifiables::Set{<:Unifiable})
     unifier
 end
 
+"""
+    most_general_unifier!(unifier!::Substitution, unifiable1::Unifiable, unifiable2::Unifiable)
+
+Computes the most general unifier of `unifiable1` and `unifiable2` and stores it in `unifier!`.
+
+This is a naive implementation of a unification algorithm. It is supposed to be comprehensible.
+"""
 function most_general_unifier!(unifier!::Substitution, unifiable1::Unifiable, unifiable2::Unifiable)
     substituted_unifiable1 = substitute(unifiable1, unifier!)
     substituted_unifiable2 = substitute(unifiable2, unifier!)
@@ -65,7 +79,16 @@ function most_general_unifier!(unifier!::Substitution, unifiable1::Unifiable, un
     end
 end
 
-# Apply substitution in order.
+"""
+    substitute(formula::Union{Term, Formula, Literal, Clause}, substitution::Substitution)
+
+Return `formula` with all entries in `substitution` applied in order.
+
+A `substitution` entry consists of a variable and a term. An entry is applied by replacing all
+occurrences of the variable with the term.
+"""
+function substitute end
+
 function substitute(formula::Union{Term, Formula, Literal, Clause}, substitution::Substitution)
     substituted_formula = formula
     for (substitutee, substituter) in substitution
@@ -103,6 +126,14 @@ function substitute(formula::Union{Term, Formula, Literal, Clause}, substitutee,
     end
 end
 
+"""
+    rename_all_variables(formula, replacements=Dict{Variable, Variable}())
+
+Return `formula` with all variables replace by new, unique names. The returned
+formula is logically equivalent to `formula`.
+
+The `replacements` dictionary is for internal use only.
+"""
 function rename_all_variables(formula, replacements=Dict{Variable, Variable}())
     @match formula begin
     f::Clause => @applyrecursively rename_all_variables(:_, replacements) f Clause
@@ -134,6 +165,16 @@ function rename_all_variables(formula, replacements=Dict{Variable, Variable}())
     end
 end
 
+"""
+    get_maybe_unifiable_literals(clause1::Clause, clause2::Clause)
+
+Return a set of clauses that might be unifiable.
+
+Each returned clause consists of literals in `clause1` and literals in
+`clause2`. To be considered unifiable, the selected literals in `clause1`
+must have the opposite negation of the literals in `clause2`. This function
+is used to reduce the search space for literals for the unification algorithm.
+"""
 function get_maybe_unifiable_literals(clause1::Clause, clause2::Clause)
     maybe_unifiable_literals = Set{Set{Literal}}()
     all_literals = union(clause1, clause2)
@@ -158,6 +199,21 @@ function get_maybe_unifiable_literals(clause1::Clause, clause2::Clause)
     end
     maybe_unifiable_literals
 end
+
+"""
+    is_satisfiable(formula; maxsearchdepth)
+
+Check if `formula` is satisfiable.
+
+If `formula` is unsatisfiable, this function will return `false` in finite time.
+If `formula` is satisfiable, this function may run forever. This behavior stems
+from the fundamental limit that the satisfiability problem for first-order logic
+is semidecidable. The `maxsearchdepth` parameter allows you to work around this
+limitation by specifying the maximum expansion depth of the resolution algorithm
+search tree. If the algorithm exceeds that limit, it throws an OverMaxSearchDepthError
+exception.
+"""
+function is_satisfiable end
 
 function is_satisfiable(clauses::CNF; maxsearchdepth=Inf)
     if maxsearchdepth == 0

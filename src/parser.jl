@@ -1,3 +1,5 @@
+export Formula
+
 Term(str::AbstractString) = begin
     function get_term(str)
         function_match = match(r"(\w*)\((.*)\)$", str)
@@ -38,6 +40,11 @@ AFormula(str::AbstractString) = begin
     AFormula(Variable(name), Formula(formula))
 end
 
+"""
+    Formula(str::AbstractString)
+
+Parse `str` to a Formula object and return that object.
+"""
 Formula(str::AbstractString) = begin
     formula = strip_and_remove_surrounding_brackets(str)
     parts = strip.(bracketsplit(formula))

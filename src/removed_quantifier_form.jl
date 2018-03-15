@@ -1,8 +1,10 @@
 export get_removed_quantifier_form
 
-# In "Logik für Informatiker", the removed quantifier form
-# is called the "Matrix" of a formula. This has nothing to
-# do with the general notion of matrices in mathematics.
+"""
+    get_removed_quantifier_form(formula::Union{Formula, Term})
+
+Return `formula` without any quantifiers.
+"""
 function get_removed_quantifier_form(formula::Union{Formula, Term})
     @match formula begin
         f::AFormula || f::EFormula => get_removed_quantifier_form(f.formula)

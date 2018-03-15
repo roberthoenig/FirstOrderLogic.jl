@@ -72,7 +72,7 @@ end
 end
 
 const Clause = Set{Literal}
-const CNF = Set{Clause}  # Conjunctive xnormal form
+const CNF = Set{Clause}  # Conjunctive normal form
 const Substitution = Vector{Pair{Variable, Term}}
 const Unifiable = Union{Literal, Term}
 

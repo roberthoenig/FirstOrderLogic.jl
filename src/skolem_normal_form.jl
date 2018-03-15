@@ -1,5 +1,12 @@
 export get_skolem_normal_form
+"""
+    get_skolem_normal_form(formula, replacements=Dict{Variable, Function}(), all_quantifiers=Vector{Variable}())
 
+Returns the [skolem normal form](https://en.wikipedia.org/wiki/Skolem_normal_form) of `formula`.
+
+`replacements` and `all_quantifiers` are optional arguments that are only used internally.
+The returned formula is equisatisfiable with `formula`.
+"""
 function get_skolem_normal_form(formula, replacements=Dict{Variable, Function}(), all_quantifiers=Vector{Variable}())
     @match formula begin
     f::AFormula => begin
