@@ -188,3 +188,19 @@ function is_satisfiable(clauses::CNF; maxsearchdepth=Inf)
         is_satisfiable(clauses, maxsearchdepth=maxsearchdepth-1)
     end
 end
+
+function is_satisfiable(formula::Formula; maxsearchdepth=Inf)
+    is_satisfiable(
+        get_conjunctive_normal_form(
+            get_removed_quantifier_form(
+                get_skolem_normal_form(
+                    get_prenex_normal_form(
+                        get_quantified_variables_form(
+                            get_renamed_quantifiers_form(
+                                formula)))))),
+        maxsearchdepth=maxsearchdepth
+    )
+end
+
+is_satisfiable(formula::String; maxsearchdepth=Inf) =
+    is_satisfiable(Formula(formula), maxsearchdepth=maxsearchdepth)
