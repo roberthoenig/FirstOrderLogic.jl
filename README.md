@@ -2,6 +2,21 @@
 |:-----------------:|:----------------:|:----------------:|
 | [![][travis-img]][travis-url] | [![][appveyor-img]][appveyor-url] | [![][codecov-img]][codecov-url] |
 
+Table of Contents
+=================
+
+   * [FirstOrderLogic.jl](#firstorderlogicjl)
+      * [Overview](#overview)
+         * [Functionality](#functionality)
+         * [Purpose](#purpose)
+      * [Installation](#installation)
+      * [Usage](#usage)
+         * [Quick walkthrough](#quick-walkthrough)
+         * [Formula syntax](#formula-syntax)
+            * [Example](#example)
+         * [Some important functions](#some-important-functions)
+      * [How is this different from PROLOG?](#how-is-this-different-from-prolog)
+
 # FirstOrderLogic.jl
 
 This is a Julia package for parsing, manipulating and evaluating formulas in first-order logic.
