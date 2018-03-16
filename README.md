@@ -120,8 +120,7 @@ The PROLOG programming language can be used to prove seemingly arbitrary stateme
   world applications, but it's not mathematically pure. `FirstOrderLogic.jl` uses a direct
   mathematical syntax for expressing formulas.
 * Expressive power: PROLOG works on a limited set of all valid formulas in first-order logic, namely
-  only formulas that can be expressed as a conjunction of [horn clauses]
-  (https://en.wikipedia.org/wiki/Horn_clause). This is sufficient for many real world applications,
+  only formulas that can be expressed as a conjunction of [horn clauses](https://en.wikipedia.org/wiki/Horn_clause). This is sufficient for many real world applications,
   but it's not mathematically complete. PROLOG thereby trades completeness for computation time.
   `FirstOrderLogic.jl` does not make that trade. It is slow, but complete.
 
