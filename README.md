@@ -1,4 +1,4 @@
-| [FirstOrderLogic.jl](#firstorderlogicjl) | | [Overview](#overview) | [Installation](#installation) | [Usage](#usage) | [Why not PROLOG?](#how-is-this-different-from-prolog) | [Roadmap](#roadmap) |
+[FirstOrderLogic.jl](#firstorderlogicjl) | [Overview](#overview) | [Installation](#installation) | [Usage](#usage) | [Why not PROLOG?](#how-is-this-different-from-prolog) | [Roadmap](#roadmap)
 
 
 # FirstOrderLogic.jl
