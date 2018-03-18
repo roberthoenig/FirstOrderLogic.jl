@@ -26,10 +26,10 @@ end
         ]), false)
 
     # Test based on "Logik für Informatiker", exercise 76.
-    testsatisfiability("((~*{x}(~S(x, p) | L(x))) | G(p)) & ((~?{x}S(x,p)) & (~G(p)))", false)
+    testsatisfiability("(*{x}(S(x, p) > L(x)) > G(p)) & ((~?{x}S(x,p)) & (~G(p)))", false)
 
     # Test based on "Logik für Informatiker", exercise 76.
-    testsatisfiability("((~*{x}(~S(x, p) | L(x))) | G(p)) & ((~?{x}S(x,p)) & (G(p)))", true)
+    testsatisfiability("(*{x}(S(x, p) > L(x)) > G(p)) & ((~?{x}S(x,p)) & (G(p)))", true)
 
     # Test based on "Logik für Informatiker", exercise 80.
     testsatisfiability(CNF([

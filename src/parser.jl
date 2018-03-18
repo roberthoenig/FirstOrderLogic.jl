@@ -48,7 +48,7 @@ Parse `str` to a Formula object and return that object.
 Formula(str::AbstractString) = begin
     formula = strip_and_remove_surrounding_brackets(str)
     parts = strip.(bracketsplit(formula))
-    current_junction = findfirst(part->ismatch(r"^[&|]$", part), parts)
+    current_junction = findfirst(part->ismatch(r"^(&|[|]|>)$", part), parts)
     if current_junction == 0
         @match formula[1] begin
         '?' => return EFormula(formula)
@@ -63,6 +63,7 @@ Formula(str::AbstractString) = begin
         @match operator begin
         "&" => return Conjunction(Formula(join(formula1)), Formula(formula2))
         "|" => return Disjunction(Formula(formula1), Formula(formula2))
+        ">" => return Disjunction(Negation(Formula(formula1)), Formula(formula2))
         end
     end
 end

@@ -83,6 +83,7 @@ The following is a list of all currently supported syntactic elements.
   ¬x                  | ~x                       | negation
   x ∧ y               | x & y                    | conjunction
   x ∨ y               | x &#124; y               | disjunction
+  x → y               | x > y                    | implication
   (x ∧ y) ∨ z         | (x & y) | z              | precedence grouping
 
 #### Example
