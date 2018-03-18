@@ -48,7 +48,6 @@ Parse `str` to a Formula object and return that object.
 Formula(str::AbstractString) = begin
     formula = strip_and_remove_surrounding_brackets(str)
     parts = strip.(bracketsplit(formula))
-    previous_junction = 0
     current_junction = findfirst(part->ismatch(r"^[&|]$", part), parts)
     if current_junction == 0
         @match formula[1] begin
@@ -58,7 +57,7 @@ Formula(str::AbstractString) = begin
         _ => return AtomicFormula(formula)
         end
     else
-        formula1 = strip(join(parts[previous_junction+1:current_junction-1]))
+        formula1 = strip(join(parts[1:current_junction-1]))
         operator = strip(join(parts[current_junction]))
         formula2 = strip(join(parts[current_junction+1:end]))
         @match operator begin
