@@ -9,6 +9,11 @@ It may prove useful to
 * the student studying first order logic and despairing over his homework.
 * the programmer looking for a clean implementation of first-order logic algorithms.
 
+For example, to check if `∀x(P(x) ∧ ¬P(f(x)))` is unsatisfiable, run
+```
+is_satisfiable("*{x}(P(x) & ~P(f(x)))")
+```
+
 ## Overview
 
 | **Linux** | **Windows** | **Coverage** |
@@ -27,11 +32,6 @@ Currently, it provides the following:
     * ...
 
 * A prover for formulas in first-order logic.
-
-For example, to check if `∀x(P(x) ∧ ¬P(f(x)))` is unsatisfiable, run
-```
-is_satisfiable("*{x}(P(x) & ~P(f(x)))")
-```
 
 ## Installation
 
