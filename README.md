@@ -1,33 +1,22 @@
-| **Linux** | **Windows** | **Coverage** |
-|:-----------------:|:----------------:|:----------------:|
-| [![][travis-img]][travis-url] | [![][appveyor-img]][appveyor-url] | [![][codecov-img]][codecov-url] |
+| [FirstOrderLogic.jl](#firstorderlogicjl) | | [Overview](#overview) | [Installation](#installation) | [Usage](#usage) | [Why not PROLOG?](#how-is-this-different-from-prolog) | [Roadmap](#roadmap) |
 
-Table of Contents
-=================
-
-   * [FirstOrderLogic.jl](#firstorderlogicjl)
-      * [Overview](#overview)
-         * [Functionality](#functionality)
-         * [Purpose](#purpose)
-      * [Installation](#installation)
-      * [Usage](#usage)
-         * [Quick walkthrough](#quick-walkthrough)
-         * [Formula syntax](#formula-syntax)
-            * [Example](#example)
-         * [Some important functions](#some-important-functions)
-      * [How is this different from PROLOG?](#how-is-this-different-from-prolog)
 
 # FirstOrderLogic.jl
 
 This is a Julia package for parsing, manipulating and evaluating formulas in first-order logic.
+It may prove useful to
+* the mathematician who wants to quickly verify a formula and enter it in plain mathematical notation.
+* the student studying first order logic and despairing over his homework.
+* the programmer looking for a clean implementation of first-order logic algorithms.
 
 ## Overview
 
+| **Linux** | **Windows** | **Coverage** |
+|:-----------------:|:----------------:|:----------------:|
+| [![][travis-img]][travis-url] | [![][appveyor-img]][appveyor-url] | [![][codecov-img]][codecov-url] |
+
 `FirstOrderLogic.jl` follows the standard structure for Julia projects.
-
-### Functionality
-
-`FirstOrderLogic.jl` currently provides the following:
+Currently, it provides the following:
 
 * An intuitive type system for formulas in first-order logic.
 
@@ -39,18 +28,10 @@ This is a Julia package for parsing, manipulating and evaluating formulas in fir
 
 * A prover for formulas in first-order logic.
 
-### Purpose
-
-`FirstOrderLogic.jl` may prove useful for the following:
-
-* Easily verifying the unsatisfiability of short formulas in first-order logic.
-    * The `is_satisfiable()` function is made for this very purpose.
-
-* Learning basic first-order logic concepts and algorithms.
-    * The whole code base is well-designed and documented.
-
-* *Coming soon!* Quickly verifying the unsatisfiability of long formulas in first-order logic.
-    * A highly optimized, parallelizable version of `is_satisfiable()` is in progress.
+For example, to check if `∀x(P(x) ∧ ¬P(f(x)))` is unsatisfiable, run
+```
+is_satisfiable("*{x}(P(x) & ~P(f(x)))")
+```
 
 ## Installation
 
@@ -138,6 +119,14 @@ The PROLOG programming language can be used to prove seemingly arbitrary stateme
   only formulas that can be expressed as a conjunction of [horn clauses](https://en.wikipedia.org/wiki/Horn_clause). This is sufficient for many real world applications,
   but it's not mathematically complete. PROLOG thereby trades completeness for computation time.
   `FirstOrderLogic.jl` does not make that trade. It is slow, but complete.
+
+## Roadmap
+
+The following features are work in progress:
+* A highly optimized, parallelizable version of the satisfiability checker `is_satisfiable()`.
+* A deadsimple webapp for the satisfiability checker `is_satisfiable()`.
+
+Any and all external contributions are most welcome!
 
 [codecov-img]: https://codecov.io/gh/roberthoenig/FirstOrderLogic.jl/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/roberthoenig/FirstOrderLogic.jl
