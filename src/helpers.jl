@@ -14,8 +14,9 @@ function bracketsplit(str)
         _ => 0
         end
         if bracket_balance == 0
-            push!(parts, str[part_start:idx])
-            part_start = idx+1
+            next_part = nextind(str, idx)
+            push!(parts, str[part_start:next_part-1])
+            part_start = next_part
         end 
     end
     parts

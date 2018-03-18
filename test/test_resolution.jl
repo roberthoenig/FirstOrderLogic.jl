@@ -8,10 +8,10 @@ end
 
 @testset "is_satisfiable" begin
     # Basic tests, easy to verify by hand.
-    testsatisfiability("P(x) & ~P(x)", false)
+    testsatisfiability("P(x) ∧ ¬P(x)", false)
     testsatisfiability("P(x) & ~P(y)", true)
     testsatisfiability("(P(x) & ~P(y)) & (~P(x) & P(y))", false)
-    testsatisfiability("(P(x) & ~P(y)) | (C(y) & ~C(y))", true)
+    testsatisfiability("(P(x) & ~P(y)) ∨ (C(y) & ~C(y))", true)
     testsatisfiability("A() & (B() | ~C()) & ~B() & C()", false)
     testsatisfiability("*{x}(P(x) & ~P(f(x)))", false)
     testsatisfiability("(S(x,p) | G(p)) & (~L(x) | G(p)) & (~S(x,p)) & (~G(p))", false)
