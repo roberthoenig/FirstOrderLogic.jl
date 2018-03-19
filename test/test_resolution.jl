@@ -1,6 +1,8 @@
 function testsatisfiability(formula, issatisfiable; maxsearchdepth=5)
     if issatisfiable == false
         @customtest is_satisfiable(formula, maxsearchdepth=maxsearchdepth) == false
+        proof = is_satisfiable(formula, maxsearchdepth=maxsearchdepth, getproof=true)
+        displayproof()
     else
         @customtest_throws OverMaxSearchDepthError is_satisfiable(formula, maxsearchdepth=maxsearchdepth)
     end

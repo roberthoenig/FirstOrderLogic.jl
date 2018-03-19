@@ -215,13 +215,14 @@ exception.
 """
 function is_satisfiable end
 
-function is_satisfiable(clauses::CNF; maxsearchdepth=Inf)
+function is_satisfiable(clauses::CNF; maxsearchdepth=Inf, getproof=false)
     if maxsearchdepth == 0
         throw(OverMaxSearchDepthError())
     end
     renamed = rename_all_variables.(collect(clauses))
     clauses = CNF(renamed)
     newclauses = CNF()
+    newclauses_resolution = Dict{Clause, ResolutionStep}()
     for clause1 in clauses
         for clause2 in clauses
             groups_of_maybe_unifiable_literals = get_maybe_unifiable_literals(clause1, clause2)
@@ -231,6 +232,12 @@ function is_satisfiable(clauses::CNF; maxsearchdepth=Inf)
                     newclause = setdiff(union(clause1, clause2), maybe_unifiable_literals)
                     substituted_newclause = substitute(newclause, unifier)
                     push!(newclauses, substituted_newclause)
+                    newclauses_resolution[substituted_newclause] = ResolutionStep(
+                        clause1,
+                        clause2,
+                        unifier,
+                        substituted_newclause
+                    )
                 catch
                     continue
                 end
@@ -238,14 +245,28 @@ function is_satisfiable(clauses::CNF; maxsearchdepth=Inf)
         end
     end
     union!(clauses, newclauses)
-    if Clause([]) in clauses
-        false
+    if getproof
+        if Clause([]) in clauses
+            [newclauses_resolution[Clause([])]]
+        else
+            proof = is_satisfiable(clauses, maxsearchdepth=maxsearchdepth-1, getproof=getproof)
+            proofclauses = Set(vcat([[step.resolver1, step.resolver2] for step in proof]...))
+            clauses_to_prove_now = filter((clause)->clause in newclauses,  proofclauses)
+            for clause in clauses_to_prove_now
+                push!(proof, newclauses_resolution[clause])
+            end
+            proof
+        end
     else
-        is_satisfiable(clauses, maxsearchdepth=maxsearchdepth-1)
+        if Clause([]) in clauses
+            false
+        else
+            is_satisfiable(clauses; maxsearchdepth=maxsearchdepth-1, getproof=getproof)
+        end
     end
 end
 
-function is_satisfiable(formula::Formula; maxsearchdepth=Inf)
+function is_satisfiable(formula::Formula; kwargs...)
     is_satisfiable(
         get_conjunctive_normal_form(
             get_removed_quantifier_form(
@@ -253,10 +274,11 @@ function is_satisfiable(formula::Formula; maxsearchdepth=Inf)
                     get_prenex_normal_form(
                         get_quantified_variables_form(
                             get_renamed_quantifiers_form(
-                                formula)))))),
-        maxsearchdepth=maxsearchdepth
+                                formula))))));
+        kwargs...
     )
 end
 
-is_satisfiable(formula::String; maxsearchdepth=Inf) =
-    is_satisfiable(Formula(formula), maxsearchdepth=maxsearchdepth)
+is_satisfiable(formula::String; kwargs...) = begin
+    is_satisfiable(Formula(formula); kwargs...)
+end

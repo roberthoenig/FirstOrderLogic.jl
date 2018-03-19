@@ -15,7 +15,8 @@ export Term,
     CNF,
     Substitution,
     Unifiable,
-    OverMaxSearchDepthError
+    OverMaxSearchDepthError,
+    ResolutionStep
 
 abstract type Term end
 abstract type Formula end
@@ -76,6 +77,13 @@ const CNF = Set{Clause}  # Conjunctive normal form
 const Substitution = Vector{Pair{Variable, Term}}
 const Unifiable = Union{Literal, Term}
 
+@auto_hash_equals struct ResolutionStep
+    resolver1::Clause
+    resolver2::Clause
+    unifier::Substitution
+    resolvent::Clause
+end
+
 String(x::PredicateSymbol) = x.symbol
 String(x::FunctionSymbol) = x.symbol
 String(x::Variable) = x.variable
@@ -89,20 +97,26 @@ String(x::Disjunction) = "($(String(x.formula1)) | $(String(x.formula2)))"
 String(x::Literal) = "$(x.negative ? "~" : "")$(String(x.formula))"
 String(x::Clause) = "{$(join(String.(collect(x)), ", "))}"
 String(x::CNF) = "{$(join(String.(collect(x)), ", "))}"
+String(x::Substitution) = reduce((str, item)->str*"[$(String(item.first))\\$(String(item.second))]", "", x)
 
 Formula(literal::Literal) = begin
-    literal.negative ? Negative(literal.formula) : literal.formula
+    literal.negative ? Negation(literal.formula) : literal.formula
 end
 
+Base.convert(::Type{Formula}, clause::Set{Literal}) = begin
+    if length(clause) == 1
+        Formula(first(clause))
+    else
+        head, tail = headtail(clause)
+        Disjunction(Formula(head), Formula(tail))
+    end
+end
 Base.convert(::Type{Formula}, cnf::Set{Set{Literal}}) = begin
     if length(cnf) == 1
         Formula(first(cnf))
     else
         head, tail = headtail(cnf)
-        @match cnf begin
         x::CNF => Conjunction(Formula(head), Formula(tail))
-        x::Clause => Disjunction(Formula(head), Formula(tail))
-        end
     end
 end
 

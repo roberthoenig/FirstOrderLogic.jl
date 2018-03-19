@@ -3,7 +3,7 @@
 
 # FirstOrderLogic.jl
 
-This is a Julia package for parsing, manipulating and evaluating formulas in first-order logic.
+This is a Julia package for parsing, manipulating and proving formulas in first-order logic.
 It may prove useful to
 * the mathematician who wants to quickly verify a formula and enter it in plain mathematical notation.
 * the student studying first order logic and despairing over his homework.
@@ -68,8 +68,7 @@ is unsatisfiable. We have verified what we wanted to verify.
 
 ### Formula syntax
 
-`FirstOrderLogic.jl` currently uses its own syntax for representing formulas
-in first-order logic. A parser for latex symbols is in progress.
+You can specify 
 
 The following is a list of all currently supported syntactic elements.
 
@@ -84,7 +83,7 @@ The following is a list of all currently supported syntactic elements.
   x ∧ y               | x & y                    | conjunction
   x ∨ y               | x &#124; y               | disjunction
   x → y               | x > y                    | implication
-  (x ∧ y) ∨ z         | (x & y) | z              | precedence grouping
+  (x ∧ y) ∨ z         | (x & y) \| z              | precedence grouping
 
 #### Example
 
