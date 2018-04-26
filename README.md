@@ -112,7 +112,7 @@ Each available function comes with a concise docstring.
 ## How is this different from PROLOG?
 
 The PROLOG programming language can be used to prove seemingly arbitrary statements in first-order logic. PROLOG differs from `FirstOrderLogic.jl` in two ways:
-* Syntax: PROLOG code is written in in facts. These facts represent horn clauses. In doing so,
+* Syntax: PROLOG code is written in facts. These facts represent horn clauses. In doing so,
   PROLOG hides the first-order logic syntax from the user. This proves convenient for real
   world applications, but it's not mathematically pure. `FirstOrderLogic.jl` uses a direct
   mathematical syntax for expressing formulas.
